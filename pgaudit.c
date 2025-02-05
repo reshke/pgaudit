@@ -1244,7 +1244,7 @@ log_select_dml(Oid auditOid, List *rangeTabls, List *permInfos)
 
         relname = get_namespace_name(relNamespaceOid);
         if (relname == NULL)
-            return 
+            return;
         /* Get a copy of the relation name and assign it to object name */
         auditEventStack->auditEvent.objectName =
             quote_qualified_identifier(
