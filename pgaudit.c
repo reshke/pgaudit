@@ -1109,6 +1109,7 @@ log_select_dml(Oid auditOid, List *rangeTabls, List *permInfos)
         Oid relNamespaceOid;
         RangeTblEntry *rte = lfirst(lr);
         const RTEPermissionInfo *perminfo;
+        char * relname;
 
         /*
          * We only care about tables/views, which have perminfoindex set. This
@@ -1241,10 +1242,13 @@ log_select_dml(Oid auditOid, List *rangeTabls, List *permInfos)
                 break;
         }
 
+        relname = get_namespace_name(relNamespaceOid);
+        if (relname == NULL)
+            return 
         /* Get a copy of the relation name and assign it to object name */
         auditEventStack->auditEvent.objectName =
             quote_qualified_identifier(
-                get_namespace_name(relNamespaceOid), get_rel_name(relOid));
+                relname, get_rel_name(relOid));
 
         /* Perform object auditing only if the audit role is valid */
         if (auditOid != InvalidOid)
